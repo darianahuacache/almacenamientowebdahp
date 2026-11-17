@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaStudio | Soluciones Digitales Modernas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Configuración personalizada de Tailwind y Variables CSS -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: 'var(--color-primary)',
+                        primaryHover: 'var(--color-primary-hover)',
+                        secondary: 'var(--color-secondary)',
+                        surface: 'var(--color-surface)',
+                        background: 'var(--color-bg)',
+                        textMain: 'var(--color-text-main)',
+                        textMuted: 'var(--color-text-muted)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Variables CSS para soporte de tema Claro/Oscuro y diseño consistente */
+        :root {
+            --color-primary: #4f46e5;       /* Indigo 600 */
+            --color-primary-hover: #4338ca; /* Indigo 700 */
+            --color-secondary: #0ea5e9;     /* Sky 500 */
+            --color-bg: #f8fafc;            /* Slate 50 */
+            --color-surface: #ffffff;       /* White */
+            --color-text-main: #0f172a;     /* Slate 900 */
+            --color-text-muted: #475569;    /* Slate 600 */
+            --border-color: #e2e8f0;        /* Slate 200 */
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --shadow-card-hover: 0 20px 35px -10px rgba(79, 70, 229, 0.15);
+        }
+
+        .dark {
+            --color-primary: #6366f1;       /* Indigo 500 */
+            --color-primary-hover: #818cf8; /* Indigo 400 */
+            --color-secondary: #38bdf8;     /* Sky 400 */
+            --color-bg: #0b0f19;            /* Deep Dark Blue */
+            --color-surface: #131b2e;       /* Dark Surface */
+            --color-text-main: #f8fafc;     /* Slate 50 */
+            --color-text-muted: #94a3b8;    /* Slate 400 */
+            --border-color: #1e293b;        /* Slate 800 */
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 20px 35px -10px rgba(99, 102, 241, 0.25);
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Estilos personalizados para tarjetas y animaciones */
+        .custom-card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-card);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card-hover);
+            border-color: var(--color-primary);
+        }
+
+        /* Animación de aparición al hacer scroll (Reveal) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gradiente de texto animado */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), #ec4899);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 6s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Efecto Glassmorphism para Navbar */
+        .glass-nav {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dark .glass-nav {
+            background-color: rgba(11, 15, 25, 0.85);
+        }
+
+        /* Animación flotante para elementos decorativos */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- ==================== BARRA DE NAVEGACIÓN ==================== -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-2.5 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
+                        <i data-lucide="sparkles" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-display font-extrabold text-xl tracking-tight">Nova<span class="text-primary">Studio</span></span>
+                </a>
+
+                <!-- Enlaces de Navegación (Escritorio) -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-sm font-medium text-textMuted hover:text-primary transition-colors">Inicio</a>
+                    <a href="#servicios" class="text-sm font-medium text-textMuted hover:text-primary transition-colors">Servicios</a>
+                    <a href="#proceso" class="text-sm font-medium text-textMuted hover:text-primary transition-colors">Metodología</a>
+                    <a href="#contacto" class="text-sm font-medium text-textMuted hover:text-primary transition-colors">Contacto</a>
+                </nav>
+
+                <!-- Botones de Acción (Tema y CTA) -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button id="theme-toggle" aria-label="Cambiar tema" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-textMuted hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="moon" id="theme-icon-dark" class="w-5 h-5 hidden"></i>
+                        <i data-lucide="sun" id="theme-icon-light" class="w-5 h-5"></i>
+                    </button>
+                    <a href="#contacto" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primaryHover text-white text-sm font-semibold shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95">
+                        Empezar Proyecto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="flex items-center space-x-2 md:hidden">
+                    <button id="theme-toggle-mobile" aria-label="Cambiar tema móvil" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-textMuted">
+                        <i data-lucide="sun" class="w-5 h-5"></i>
+                    </button>
+                    <button id="mobile-menu-btn" aria-label="Abrir menú" class="p-2.5 rounded-xl text-textMain hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface border-b border-slate-200 dark:border-slate-800 px-4 pt-2 pb-6 space-y-2 shadow-xl">
+            <a href="#inicio" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Inicio</a>
+            <a href="#servicios" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Servicios</a>
+            <a href="#proceso" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Metodología</a>
+            <a href="#contacto" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Contacto</a>
+            <div class="pt-2">
+                <a href="#contacto" class="mobile-link block w-full text-center px-5 py-3 rounded-xl bg-primary text-white font-semibold shadow-md">
+                    Empezar Proyecto
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== SECCIÓN PRINCIPAL (HERO) ==================== -->
+    <main>
+        <section id="inicio" class="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden">
+            <!-- Elementos decorativos de fondo -->
+            <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+            <div class="absolute top-40 right-10 w-72 h-72 bg-sky-400/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <!-- Contenido textual Hero -->
+                    <div class="lg:col-span-7 text-center lg:text-left space-y-8">
+                        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-primary text-xs sm:text-sm font-semibold">
+                            <span class="flex h-2 w-2 rounded-full bg-primary animate-ping"></span>
+                            <span>Innovación Digital para el 2026</span>
+                        </div>
+
+                        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                            Transformamos ideas en <span class="gradient-text">experiencias digitales</span> extraordinarias.
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-textMuted max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            Diseñamos y desarrollamos sitios web rápidos, escalables y centrados en el usuario. Impulsa tu marca con tecnología de vanguardia y un diseño que cautiva desde el primer segundo.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                            <a href="#contacto" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-primary hover:bg-primaryHover text-white font-semibold shadow-lg shadow-indigo-500/30 transition-all hover:-translate-y-1 flex items-center justify-center space-x-2">
+                                <span>Solicitar Cotización</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#servicios" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-surface border border-slate-200 dark:border-slate-700 hover:border-primary font-semibold transition-all hover:-translate-y-1 flex items-center justify-center space-x-2">
+                                <span>Explorar Servicios</span>
+                            </a>
+                        </div>
+
+                        <!-- Métricas rápidas -->
+                        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-200 dark:border-slate-800 max-w-lg mx-auto lg:mx-0">
+                            <div>
+                                <p class="font-display text-2xl sm:text-3xl font-bold text-textMain">+150</p>
+                                <p class="text-xs sm:text-sm text-textMuted">Proyectos Exitosos</p>
+                            </div>
+                            <div>
+                                <p class="font-display text-2xl sm:text-3xl font-bold text-textMain">99%</p>
+                                <p class="text-xs sm:text-sm text-textMuted">Clientes Felices</p>
+                            </div>
+                            <div>
+                                <p class="font-display text-2xl sm:text-3xl font-bold text-textMain">24/7</p>
+                                <p class="text-xs sm:text-sm text-textMuted">Soporte Técnico</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta Visual Interactiva Hero -->
+                    <div class="lg:col-span-5 relative">
+                        <div class="animate-float relative rounded-3xl p-6 sm:p-8 custom-card bg-gradient-to-br from-surface to-slate-50 dark:from-slate-900 dark:to-slate-800/80">
+                            <!-- Barra superior estilo ventana de navegador -->
+                            <div class="flex items-center justify-between pb-6 border-b border-slate-200 dark:border-slate-700">
+                                <div class="flex space-x-2">
+                                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                </div>
+                                <span class="text-xs font-mono text-textMuted bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">rendimiento: 100/100</span>
+                            </div>
+
+                            <!-- Contenido simulado de Dashboard -->
+                            <div class="py-6 space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs text-textMuted uppercase font-semibold tracking-wider">Crecimiento Mensual</p>
+                                        <p class="text-2xl font-bold mt-1">+248.5%</p>
+                                    </div>
+                                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                                        <i data-lucide="trending-up" class="w-6 h-6"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Barras de progreso animadas -->
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between text-xs font-medium mb-1">
+                                            <span>Velocidad de Carga</span>
+                                            <span class="text-primary">0.4s</span>
+                                        </div>
+                                        <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                            <div class="bg-primary h-full rounded-full w-[96%]"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs font-medium mb-1">
+                                            <span>Optimización SEO</span>
+                                            <span class="text-sky-500">98%</span>
+                                        </div>
+                                        <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                            <div class="bg-sky-500 h-full rounded-full w-[98%]"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mini tarjeta flotante -->
+                                <div class="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900 flex items-center space-x-3">
+                                    <div class="p-2.5 rounded-xl bg-primary text-white">
+                                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold">Arquitectura Responsiva</p>
+                                        <p class="text-xs text-textMuted">Adaptable a móviles, tablets y escritorio.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN DE SERVICIOS / CARACTERÍSTICAS ==================== -->
+        <section id="servicios" class="py-20 lg:py-28 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Encabezado de Sección -->
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <span class="text-primary font-semibold text-sm uppercase tracking-wider">Nuestros Servicios</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2 mb-4">Soluciones diseñadas para escalar tu negocio</h2>
+                    <p class="text-textMuted text-base sm:text-lg">
+                        Combinamos estética minimalista con ingeniería web robusta. Haz clic en cualquiera de nuestras tarjetas para ver más detalles.
+                    </p>
+                </div>
+
+                <!-- Filtros Interactivos de Categoría -->
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 reveal">
+                    <button class="filter-btn active px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white shadow-md transition-all" data-filter="all">
+                        Todos
+                    </button>
+                    <button class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold bg-surface border border-slate-200 dark:border-slate-700 text-textMuted hover:text-primary transition-all" data-filter="web">
+                        Desarrollo Web
+                    </button>
+                    <button class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold bg-surface border border-slate-200 dark:border-slate-700 text-textMuted hover:text-primary transition-all" data-filter="design">
+                        Diseño UI/UX
+                    </button>
+                    <button class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold bg-surface border border-slate-200 dark:border-slate-700 text-textMuted hover:text-primary transition-all" data-filter="growth">
+                        Marketing & SEO
+                    </button>
+                </div>
+
+                <!-- Cuadrícula de Tarjetas Interactivas -->
+                <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Tarjeta 1 -->
+                    <div class="service-card custom-card rounded-3xl p-8 flex flex-col justify-between reveal cursor-pointer group" data-category="web" onclick="openServiceModal('Desarrollo Web a Medida', 'Creamos aplicaciones web ultrarrápidas utilizando HTML5 moderno, CSS limpio, JavaScript avanzado y los mejores estándares de accesibilidad.', ['Arquitectura SPA y MPA', 'Optimización Core Web Vitals', 'Integración de APIs REST y GraphQL'])">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-primary flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                <i data-lucide="code-2" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="font-display text-xl font-bold mb-3 group-hover:text-primary transition-colors">Desarrollo Web a Medida</h3>
+                            <p class="text-textMuted text-sm leading-relaxed mb-6">
+                                Sitios web y aplicaciones interactivas construidas con código limpio, alto rendimiento y compatibilidad total en todos los navegadores.
+                            </p>
+                        </div>
+                        <div class="flex items-center text-primary text-sm font-semibold">
+                            <span>Ver detalles</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 ml-1 group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 2 -->
+                    <div class="service-card custom-card rounded-3xl p-8 flex flex-col justify-between reveal cursor-pointer group" data-category="design" onclick="openServiceModal('Diseño UI/UX Centrado en Usuarios', 'Diseñamos interfaces intuitivas y sistemas de diseño escalables que mejoran la retención y conversión de tus visitantes.', ['Prototipado Interactivo', 'Sistemas de Diseño (Design Systems)', 'Pruebas de Usabilidad Móvil'])">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300">
+                                <i data-lucide="layout" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="font-display text-xl font-bold mb-3 group-hover:text-sky-500 transition-colors">Diseño UI/UX Moderno</h3>
+                            <p class="text-textMuted text-sm leading-relaxed mb-6">
+                                Interfaces elegantes, micro-interacciones fluidas y experiencias de usuario pensadas para maximizar la conversión en cada clic.
+                            </p>
+                        </div>
+                        <div class="flex items-center text-sky-500 text-sm font-semibold">
+                            <span>Ver detalles</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 ml-1 group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 3 -->
+                    <div class="service-card custom-card rounded-3xl p-8 flex flex-col justify-between reveal cursor-pointer group" data-category="web" onclick="openServiceModal('Comercio Electrónico (E-Commerce)', 'Tiendas online optimizadas para vender más, con pasarelas de pago seguras, gestión de inventario y checkout en un clic.', ['Pasarelas de Pago Seguras', 'Catálogos Dinámicos', 'Panel de Analíticas de Ventas'])">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                <i data-lucide="shopping-bag" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="font-display text-xl font-bold mb-3 group-hover:text-emerald-500 transition-colors">Tiendas Online (E-Commerce)</h3>
+                            <p class="text-textMuted text-sm leading-relaxed mb-6">
+                                Plataformas de venta robustas con procesos de compra simplificados, seguridad bancaria y diseño adaptado a dispositivos móviles.
+                            </p>
+                        </div>
+                        <div class="flex items-center text-emerald-500 text-sm font-semibold">
+                            <span>Ver detalles</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 ml-1 group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 4 -->
+                    <div class="service-card custom-card rounded-3xl p-8 flex flex-col justify-between reveal cursor-pointer group" data-category="growth" onclick="openServiceModal('SEO Técnico y Posicionamiento', 'Auditamos y optimizamos la estructura de tu sitio web para que aparezcas en los primeros resultados de búsqueda orgánica.', ['Auditoría SEO Técnica', 'Optimización de Velocidad', 'Estrategia de Contenidos'])">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                                <i data-lucide="search" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="font-display text-xl font-bold mb-3 group-hover:text-amber-500 transition-colors">SEO Técnico & Rendimiento</h3>
+                            <p class="text-textMuted text-sm leading-relaxed mb-6">
+                                Aumenta tu visibilidad orgánica con código semántico, tiempos de carga instantáneos y métricas optimizadas para buscadores.
+                            </p>
+                        </div>
+                        <div class="flex items-center text-amber-500 text-sm font-semibold">
+                            <span>Ver detalles</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 ml-1 group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 5 -->
+                    <div class="service-card custom-card rounded-3xl p-8 flex flex-col justify-between reveal cursor-pointer group" data-category="design" onclick="openServiceModal('Identidad Visual y Branding', 'Construimos marcas memorables desde cero: logotipos, paletas tipográficas, guías de estilo y activos digitales.', ['Diseño de Logotipo', 'Manual de Identidad Corporativa', 'Kit para Redes Sociales'])">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300">
+                                <i data-lucide="palette" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="font-display text-xl font-bold mb-3 group-hover:text-rose-500 transition-colors">Identidad Visual & Marca</h3>
+                            <p class="text-textMuted text-sm leading-relaxed mb-6">
+                                Definimos la personalidad visual de tu empresa para que destaque frente a la competencia con coherencia y profesionalismo.
+                            </p>
+                        </div>
+                        <div class="flex items-center text-rose-500 text-sm font-semibold">
+                            <span>Ver detalles</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 ml-1 group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 6 -->
+                    <div class="service-card custom-card rounded-3xl p-8 flex flex-col justify-between reveal cursor-pointer group" data-category="growth" onclick="openServiceModal('Mantenimiento y Seguridad Cloud', 'Nos encargamos de las actualizaciones, copias de seguridad automáticas y protección contra amenazas 24/7.', ['Copias de Seguridad Diarias', 'Certificados SSL y Firewall', 'Monitoreo de Disponibilidad'])">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300">
+                                <i data-lucide="shield" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="font-display text-xl font-bold mb-3 group-hover:text-purple-500 transition-colors">Seguridad & Soporte Cloud</h3>
+                            <p class="text-textMuted text-sm leading-relaxed mb-6">
+                                Mantén tu plataforma siempre activa, protegida y actualizada con nuestro servicio continuo de monitoreo preventivo.
+                            </p>
+                        </div>
+                        <div class="flex items-center text-purple-500 text-sm font-semibold">
+                            <span>Ver detalles</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 ml-1 group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN DE METODOLOGÍA (PASOS) ==================== -->
+        <section id="proceso" class="py-20 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <span class="text-primary font-semibold text-sm uppercase tracking-wider">Cómo Trabajamos</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2 mb-4">Un proceso claro de principio a fin</h2>
+                    <p class="text-textMuted">Sin sorpresas ni retrasos. Te acompañamos en cada etapa para asegurar resultados excepcionales.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Paso 1 -->
+                    <div class="relative p-8 rounded-3xl bg-surface border border-slate-200 dark:border-slate-800 reveal">
+                        <span class="font-display text-5xl font-extrabold text-indigo-500/20 absolute top-6 right-8">01</span>
+                        <div class="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center font-bold mb-6">
+                            <i data-lucide="compass" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold mb-2">Estrategia y Descubrimiento</h3>
+                        <p class="text-textMuted text-sm leading-relaxed">Analizamos tus objetivos, tu audiencia y tu mercado para trazar una hoja de ruta digital precisa.</p>
+                    </div>
+
+                    <!-- Paso 2 -->
+                    <div class="relative p-8 rounded-3xl bg-surface border border-slate-200 dark:border-slate-800 reveal">
+                        <span class="font-display text-5xl font-extrabold text-indigo-500/20 absolute top-6 right-8">02</span>
+                        <div class="w-12 h-12 rounded-xl bg-sky-500 text-white flex items-center justify-center font-bold mb-6">
+                            <i data-lucide="pen-tool" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold mb-2">Diseño y Desarrollo</h3>
+                        <p class="text-textMuted text-sm leading-relaxed">Creamos prototipos visuales y escribimos código limpio, responsivo y altamente optimizado.</p>
+                    </div>
+
+                    <!-- Paso 3 -->
+                    <div class="relative p-8 rounded-3xl bg-surface border border-slate-200 dark:border-slate-800 reveal">
+                        <span class="font-display text-5xl font-extrabold text-indigo-500/20 absolute top-6 right-8">03</span>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold mb-6">
+                            <i data-lucide="rocket" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold mb-2">Lanzamiento y Escalado</h3>
+                        <p class="text-textMuted text-sm leading-relaxed">Desplegamos tu proyecto en producción con pruebas exhaustivas de rendimiento y seguridad.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN DE CONTACTO CON VALIDACIÓN ==================== -->
+        <section id="contacto" class="py-20 lg:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    
+                    <!-- Información de Contacto -->
+                    <div class="lg:col-span-5 space-y-8 reveal">
+                        <div>
+                            <span class="text-primary font-semibold text-sm uppercase tracking-wider">Contáctanos</span>
+                            <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2 mb-4">¿Listo para iniciar tu próximo proyecto?</h2>
+                            <p class="text-textMuted leading-relaxed">
+                                Completa el formulario y nuestro equipo se pondrá en contacto contigo en menos de 24 horas hábiles para ofrecerte una asesoría gratuita.
+                            </p>
+                        </div>
+
+                        <div class="space-y-5">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-primary flex items-center justify-center shrink-0">
+                                    <i data-lucide="mail" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-base">Correo Electrónico</h4>
+                                    <p class="text-textMuted text-sm">hola@novastudio.es</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0">
+                                    <i data-lucide="phone" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-base">Teléfono Directo</h4>
+                                    <p class="text-textMuted text-sm">+34 910 123 456</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                                    <i data-lucide="map-pin" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-base">Oficina Central</h4>
+                                    <p class="text-textMuted text-sm">Av. Innovación 420, Distrito Digital</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario Funcional -->
+                    <div class="lg:col-span-7 reveal">
+                        <div class="custom-card rounded-3xl p-6 sm:p-10">
+                            <form id="contact-form" novalidate class="space-y-6">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <!-- Campo Nombre -->
+                                    <div>
+                                        <label for="name" class="block text-sm font-semibold mb-2">Nombre Completo *</label>
+                                        <input type="text" id="name" name="name" placeholder="Ej. Carlos Mendoza"
+                                            class="w-full px-4 py-3.5 rounded-xl bg-background border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm">
+                                        <p id="error-name" class="text-rose-500 text-xs mt-1.5 hidden flex items-center">
+                                            <i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1"></i>
+                                            <span>Por favor, ingresa tu nombre (mínimo 3 caracteres).</span>
+                                        </p>
+                                    </div>
+
+                                    <!-- Campo Email -->
+                                    <div>
+                                        <label for="email" class="block text-sm font-semibold mb-2">Correo Electrónico *</label>
+                                        <input type="email" id="email" name="email" placeholder="carlos@empresa.com"
+                                            class="w-full px-4 py-3.5 rounded-xl bg-background border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm">
+                                        <p id="error-email" class="text-rose-500 text-xs mt-1.5 hidden flex items-center">
+                                            <i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1"></i>
+                                            <span>Ingresa un correo electrónico válido.</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Selector de Servicio -->
+                                <div>
+                                    <label for="service" class="block text-sm font-semibold mb-2">Servicio de Interés</label>
+                                    <select id="service" name="service"
+                                        class="w-full px-4 py-3.5 rounded-xl bg-background border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm">
+                                        <option value="Desarrollo Web">Desarrollo Web a Medida</option>
+                                        <option value="Diseño UI/UX">Diseño UI/UX Moderno</option>
+                                        <option value="E-Commerce">Tienda Online (E-Commerce)</option>
+                                        <option value="SEO y Marketing">SEO Técnico y Rendimiento</option>
+                                        <option value="Otro">Otro Proyecto</option>
+                                    </select>
+                                </div>
+
+                                <!-- Campo Mensaje -->
+                                <div>
+                                    <label for="message" class="block text-sm font-semibold mb-2">Cuéntanos sobre tu proyecto *</label>
+                                    <textarea id="message" name="message" rows="4" placeholder="Describe brevemente tus objetivos, plazos o ideas..."
+                                        class="w-full px-4 py-3.5 rounded-xl bg-background border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm resize-none"></textarea>
+                                    <p id="error-message" class="text-rose-500 text-xs mt-1.5 hidden flex items-center">
+                                        <i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1"></i>
+                                        <span>El mensaje debe tener al menos 15 caracteres.</span>
+                                    </p>
+                                </div>
+
+                                <!-- Botón Enviar -->
+                                <button type="submit" id="submit-btn"
+                                    class="w-full py-4 px-6 rounded-xl bg-primary hover:bg-primaryHover text-white font-semibold shadow-lg shadow-indigo-500/25 transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2">
+                                    <span>Enviar Mensaje</span>
+                                    <i data-lucide="send" class="w-4 h-4"></i>
+                                </button>
+                            </form>
+
+                            <!-- Mensaje de Confirmación (Oculto por defecto) -->
+                            <div id="form-success" class="hidden text-center py-10 space-y-4">
+                                <div class="w-16 h-16 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center mx-auto">
+                                    <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold">¡Mensaje Enviado con Éxito!</h3>
+                                <p class="text-textMuted text-sm max-w-md mx-auto">
+                                    Gracias por contactarnos, <span id="submitted-name" class="font-semibold text-textMain"></span>. Hemos recibido tu consulta y te responderemos muy pronto.
+                                </p>
+                                <button onclick="resetContactForm()" class="mt-4 px-6 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-semibold hover:border-primary transition-colors">
+                                    Enviar otro mensaje
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== PIE DE PÁGINA (FOOTER) ==================== -->
+    <footer class="bg-surface border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-200 dark:border-slate-800">
+                <!-- Columna Marca -->
+                <div class="space-y-4">
+                    <a href="#" class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center text-white">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <span class="font-display font-extrabold text-xl">Nova<span class="text-primary">Studio</span></span>
+                    </a>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        Creamos productos digitales excepcionales que conectan marcas con personas mediante diseño y tecnología.
+                    </p>
+                    <div class="flex space-x-3 pt-2">
+                        <a href="#" aria-label="Twitter" class="w-10 h-10 rounded-xl bg-background border border-slate-200 dark:border-slate-700 flex items-center justify-center text-textMuted hover:text-primary hover:border-primary transition-colors">
+                            <i data-lucide="twitter" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-background border border-slate-200 dark:border-slate-700 flex items-center justify-center text-textMuted hover:text-primary hover:border-primary transition-colors">
+                            <i data-lucide="instagram" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-xl bg-background border border-slate-200 dark:border-slate-700 flex items-center justify-center text-textMuted hover:text-primary hover:border-primary transition-colors">
+                            <i data-lucide="linkedin" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" aria-label="GitHub" class="w-10 h-10 rounded-xl bg-background border border-slate-200 dark:border-slate-700 flex items-center justify-center text-textMuted hover:text-primary hover:border-primary transition-colors">
+                            <i data-lucide="github" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Columna Enlaces -->
+                <div>
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider mb-4">Navegación</h4>
+                    <ul class="space-y-3 text-sm text-textMuted">
+                        <li><a href="#inicio" class="hover:text-primary transition-colors">Inicio</a></li>
+                        <li><a href="#servicios" class="hover:text-primary transition-colors">Servicios</a></li>
+                        <li><a href="#proceso" class="hover:text-primary transition-colors">Metodología</a></li>
+                        <li><a href="#contacto" class="hover:text-primary transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna Servicios -->
+                <div>
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider mb-4">Servicios</h4>
+                    <ul class="space-y-3 text-sm text-textMuted">
+                        <li><a href="#servicios" class="hover:text-primary transition-colors">Desarrollo Web</a></li>
+                        <li><a href="#servicios" class="hover:text-primary transition-colors">Diseño UI/UX</a></li>
+                        <li><a href="#servicios" class="hover:text-primary transition-colors">E-Commerce</a></li>
+                        <li><a href="#servicios" class="hover:text-primary transition-colors">Optimización SEO</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna Boletín -->
+                <div>
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider mb-4">Boletín Mensual</h4>
+                    <p class="text-textMuted text-sm mb-4">Recibe consejos sobre diseño web y tendencias digitales.</p>
+                    <form id="newsletter-form" class="flex space-x-2">
+                        <input type="email" required placeholder="Tu correo..." class="w-full px-3.5 py-2.5 rounded-xl bg-background border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:border-primary">
+                        <button type="submit" aria-label="Suscribirse" class="px-4 py-2.5 rounded-xl bg-primary hover:bg-primaryHover text-white font-semibold transition-colors">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                    <p id="newsletter-msg" class="text-emerald-500 text-xs mt-2 hidden">¡Gracias por suscribirte!</p>
+                </div>
+            </div>
+
+            <!-- Derechos de autor -->
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-textMuted gap-4">
+                <p>&copy; 2026 NovaStudio Digital. Todos los derechos reservados.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-primary transition-colors">Privacidad</a>
+                    <a href="#" class="hover:text-primary transition-colors">Términos de Uso</a>
+                    <a href="#" class="hover:text-primary transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== MODAL INTERACTIVO PARA DETALLES DE SERVICIO ==================== -->
+    <div id="service-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+        <div class="bg-surface border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl transform transition-all scale-95 opacity-0" id="modal-content">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-primary flex items-center justify-center">
+                    <i data-lucide="layers" class="w-6 h-6"></i>
+                </div>
+                <button onclick="closeServiceModal()" aria-label="Cerrar ventana" class="p-2 rounded-xl text-textMuted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <h3 id="modal-title" class="font-display text-2xl font-bold mb-3">Título del Servicio</h3>
+            <p id="modal-desc" class="text-textMuted text-sm leading-relaxed mb-6">Descripción detallada del servicio seleccionado.</p>
+            
+            <div class="bg-background rounded-2xl p-4 mb-6 border border-slate-200 dark:border-slate-800">
+                <p class="text-xs font-bold uppercase tracking-wider text-textMuted mb-3">¿Qué incluye?</p>
+                <ul id="modal-features" class="space-y-2.5 text-sm">
+                    <!-- Se llena dinámicamente con JS -->
+                </ul>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeServiceModal()" class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    Cerrar
+                </button>
+                <a href="#contacto" onclick="closeServiceModal()" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primaryHover text-white text-sm font-semibold shadow-md transition-colors">
+                    Solicitar este servicio
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // 1. GESTIÓN DE TEMA CLARO / OSCURO
+        const htmlElement = document.documentElement;
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const iconDark = document.getElementById('theme-icon-dark');
+        const iconLight = document.getElementById('theme-icon-light');
+
+        function updateThemeIcons(isDark) {
+            if (isDark) {
+                iconDark.classList.remove('hidden');
+                iconLight.classList.add('hidden');
+            } else {
+                iconDark.classList.add('hidden');
+                iconLight.classList.remove('hidden');
+            }
+        }
+
+        // Comprobar preferencia guardada o del sistema
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+            updateThemeIcons(true);
+        } else {
+            updateThemeIcons(false);
+        }
+
+        function toggleTheme() {
+            const isDark = htmlElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcons(isDark);
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleMobile.addEventListener('click', toggleTheme);
+
+        // 2. MENÚ DE NAVEGACIÓN MÓVIL
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 3. ANIMACIÓN DE APARICIÓN AL HACER SCROLL (INTERSECTION OBSERVER)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 4. FILTRADO INTERACTIVO DE TARJETAS DE SERVICIOS
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const serviceCards = document.querySelectorAll('.service-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Actualizar estilos de botones
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-white', 'shadow-md');
+                    b.classList.add('bg-surface', 'text-textMuted', 'border', 'border-slate-200', 'dark:border-slate-700');
+                });
+                btn.classList.add('bg-primary', 'text-white', 'shadow-md');
+                btn.classList.remove('bg-surface', 'text-textMuted', 'border', 'border-slate-200', 'dark:border-slate-700');
+
+                const filter = btn.getAttribute('data-filter');
+
+                serviceCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'flex';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 20);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 250);
+                    }
+                });
+            });
+        });
+
+        // 5. MODAL INTERACTIVO DE DETALLES DE SERVICIO
+        const modal = document.getElementById('service-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalFeatures = document.getElementById('modal-features');
+
+        function openServiceModal(title, description, features) {
+            modalTitle.textContent = title;
+            modalDesc.textContent = description;
+            modalFeatures.innerHTML = '';
+
+            features.forEach(feat => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center space-x-2.5';
+                li.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i><span>${feat}</span>`;
+                modalFeatures.appendChild(li);
+            });
+            lucide.createIcons();
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeServiceModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        // Cerrar modal al hacer clic fuera
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeServiceModal();
+        });
+
+        // 6. VALIDACIÓN DEL FORMULARIO DE CONTACTO
+        const contactForm = document.getElementById('contact-form');
+        const formSuccess = document.getElementById('form-success');
+        const submittedNameSpan = document.getElementById('submitted-name');
+
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const messageInput = document.getElementById('message');
+
+        const errorName = document.getElementById('error-name');
+        const errorEmail = document.getElementById('error-email');
+        const errorMessage = document.getElementById('error-message');
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function setFieldState(input, errorEl, isValid) {
+            if (!isValid) {
+                input.classList.add('border-rose-500', 'focus:ring-rose-500');
+                input.classList.remove('border-slate-300', 'dark:border-slate-700', 'focus:ring-primary');
+                errorEl.classList.remove('hidden');
+            } else {
+                input.classList.remove('border-rose-500', 'focus:ring-rose-500');
+                input.classList.add('border-slate-300', 'dark:border-slate-700', 'focus:ring-primary');
+                errorEl.classList.add('hidden');
+            }
+        }
+
+        // Validación en tiempo real al escribir
+        nameInput.addEventListener('input', () => setFieldState(nameInput, errorName, nameInput.value.trim().length >= 3));
+        emailInput.addEventListener('input', () => setFieldState(emailInput, errorEmail, validateEmail(emailInput.value.trim())));
+        messageInput.addEventListener('input', () => setFieldState(messageInput, errorMessage, messageInput.value.trim().length >= 15));
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const isNameValid = nameInput.value.trim().length >= 3;
+            const isEmailValid = validateEmail(emailInput.value.trim());
+            const isMessageValid = messageInput.value.trim().length >= 15;
+
+            setFieldState(nameInput, errorName, isNameValid);
+            setFieldState(emailInput, errorEmail, isEmailValid);
+            setFieldState(messageInput, errorMessage, isMessageValid);
+
+            if (isNameValid && isEmailValid && isMessageValid) {
+                submittedNameSpan.textContent = nameInput.value.trim();
+                contactForm.classList.add('hidden');
+                formSuccess.classList.remove('hidden');
+            }
+        });
+
+        function resetContactForm() {
+            contactForm.reset();
+            contactForm.classList.remove('hidden');
+            formSuccess.classList.add('hidden');
+        }
+
+        // 7. SUSCRIPCIÓN AL BOLETÍN EN FOOTER
+        const newsletterForm = document.getElementById('newsletter-form');
+        const newsletterMsg = document.getElementById('newsletter-msg');
+
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            newsletterForm.reset();
+            newsletterMsg.classList.remove('hidden');
+            setTimeout(() => {
+                newsletterMsg.classList.add('hidden');
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
